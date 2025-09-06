@@ -1,70 +1,88 @@
-"use client"
+"use client";
 
 import Image from "next/image";
 import Link from "next/link";
 import { useState } from "react";
-import { Menu, X } from "lucide-react";
 
-const navLinks = ["Men", "Women", "Kids", "Collections", "Contact"];
+const NAV_LINKS = [
+  { label: "Men", href: "/products?gender=men" },
+  { label: "Women", href: "/products?gender=women" },
+  { label: "Kids", href: "/products?gender=unisex" },
+  { label: "Collections", href: "/collections" },
+  { label: "Contact", href: "/contact" },
+] as const;
 
 export default function Navbar() {
-  const [isOpen, setIsOpen] = useState(false);
+  const [open, setOpen] = useState(false);
 
   return (
-    <header className="w-full border-b border-gray-200 bg-white">
-      <div className="mx-auto flex max-w-7xl items-center justify-between px-4 py-3 md:px-8">
-        {/* Logo */}
-        <Link href="/" className="flex items-center">
-          <Image src="/logo.svg" alt="Logo" width={32} height={32} priority className="invert"/>
+    <header className="sticky top-0 z-50 bg-light-100">
+      <nav
+        className="mx-auto flex h-16 max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8"
+        aria-label="Primary"
+      >
+        <Link href="/" aria-label="Nike Home" className="flex items-center">
+          <Image src="/logo.svg" alt="Nike" width={28} height={28} priority className="invert" />
         </Link>
 
-        {/* Desktop Nav */}
-        <nav className="hidden md:flex gap-8">
-          {navLinks.map((link) => (
-            <Link
-              key={link}
-              href="#"
-              className="text-sm font-medium text-gray-800 hover:text-black"
-            >
-              {link}
-            </Link>
+        <ul className="hidden items-center gap-8 md:flex">
+          {NAV_LINKS.map((l) => (
+            <li key={l.href}>
+              <Link
+                href={l.href}
+                className="text-body text-dark-900 transition-colors hover:text-dark-700"
+              >
+                {l.label}
+              </Link>
+            </li>
           ))}
-        </nav>
+        </ul>
 
-        {/* Right Section */}
-        <div className="hidden md:flex gap-6 text-sm font-medium text-gray-800">
-          <button>Search</button>
-          <button>My Cart (2)</button>
-        </div>
-
-        {/* Mobile Hamburger */}
-        <button
-          className="md:hidden"
-          onClick={() => setIsOpen(!isOpen)}
-          aria-label="Toggle menu"
-        >
-          {isOpen ? <X size={24} /> : <Menu size={24} />}
-        </button>
-      </div>
-
-      {/* Mobile Menu */}
-      {isOpen && (
-        <nav className="md:hidden flex flex-col gap-4 px-4 pb-4">
-          {navLinks.map((link) => (
-            <Link
-              key={link}
-              href="#"
-              className="text-sm font-medium text-gray-800 hover:text-black"
-            >
-              {link}
-            </Link>
-          ))}
-          <button className="text-sm font-medium text-gray-800">Search</button>
-          <button className="text-sm font-medium text-gray-800">
+        <div className="hidden items-center gap-6 md:flex">
+          <button className="text-body text-dark-900 transition-colors hover:text-dark-700">
+            Search
+          </button>
+          <button className="text-body text-dark-900 transition-colors hover:text-dark-700">
             My Cart (2)
           </button>
-        </nav>
-      )}
+        </div>
+
+        <button
+          type="button"
+          className="inline-flex items-center justify-center rounded-md p-2 md:hidden"
+          aria-controls="mobile-menu"
+          aria-expanded={open}
+          onClick={() => setOpen((v) => !v)}
+        >
+          <span className="sr-only">Toggle navigation</span>
+          <span className="mb-1 block h-0.5 w-6 bg-dark-900"></span>
+          <span className="mb-1 block h-0.5 w-6 bg-dark-900"></span>
+          <span className="block h-0.5 w-6 bg-dark-900"></span>
+        </button>
+      </nav>
+
+      <div
+        id="mobile-menu"
+        className={`border-t border-light-300 md:hidden ${open ? "block" : "hidden"}`}
+      >
+        <ul className="space-y-2 px-4 py-3">
+          {NAV_LINKS.map((l) => (
+            <li key={l.href}>
+              <Link
+                href={l.href}
+                className="block py-2 text-body text-dark-900 hover:text-dark-700"
+                onClick={() => setOpen(false)}
+              >
+                {l.label}
+              </Link>
+            </li>
+          ))}
+          <li className="flex items-center justify-between pt-2">
+            <button className="text-body">Search</button>
+            <button className="text-body">My Cart (2)</button>
+          </li>
+        </ul>
+      </div>
     </header>
   );
 }
