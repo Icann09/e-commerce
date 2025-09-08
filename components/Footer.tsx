@@ -12,39 +12,42 @@ const footerLinks = {
 export default function Footer() {
   return (
     <footer className="bg-black text-gray-300 py-10">
-      <div className="mx-auto max-w-7xl px-4 md:px-8 grid grid-cols-2 md:grid-cols-5 gap-8">
-        {/* Logo */}
-        <div>
-          <Image src="/logo.svg" alt="Logo" width={60} height={60} />
-        </div>
-
-        {/* Links */}
-        {Object.entries(footerLinks).map(([section, links]) => (
-          <div key={section}>
-            <h4 className="mb-3 font-semibold text-white">{section}</h4>
-            <ul className="space-y-2">
-              {links.map((link) => (
-                <li key={link}>
-                  <Link href="#" className="hover:text-white text-sm">
-                    {link}
-                  </Link>
-                </li>
-              ))}
-            </ul>
+      <div className="mx-auto max-w-7xl px-4 md:px-8">
+        {/* Grid layout */}
+        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-8">
+          {/* Logo */}
+          <div className="col-span-2 sm:col-span-1 flex justify-center sm:justify-start">
+            <Image src="/logo.svg" alt="Logo" width={60} height={60} />
           </div>
-        ))}
 
-        {/* Socials */}
-        <div className="flex gap-4 md:justify-end">
-          <Twitter size={20} className="hover:text-white" />
-          <Facebook size={20} className="hover:text-white" />
-          <Instagram size={20} className="hover:text-white" />
+          {/* Links */}
+          {Object.entries(footerLinks).map(([section, links]) => (
+            <div key={section}>
+              <h4 className="mb-3 font-semibold text-white">{section}</h4>
+              <ul className="space-y-2">
+                {links.map((link) => (
+                  <li key={link}>
+                    <Link href="#" className="hover:text-white text-sm">
+                      {link}
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          ))}
+
+          {/* Socials */}
+          <div className="flex gap-4 items-start">
+            <Twitter size={20} className="hover:text-white cursor-pointer" />
+            <Facebook size={20} className="hover:text-white cursor-pointer" />
+            <Instagram size={20} className="hover:text-white cursor-pointer" />
+          </div>
         </div>
-      </div>
 
-      {/* Copyright */}
-      <div className="mt-8 border-t border-gray-700 pt-4 text-center text-xs text-gray-400">
-        © {new Date().getFullYear()} Nike Clone. All rights reserved.
+        {/* Copyright */}
+        <div className="mt-8 border-t border-gray-700 pt-4 text-center text-xs text-gray-400">
+          © {new Date().getFullYear()} Nike Clone. All rights reserved.
+        </div>
       </div>
     </footer>
   );
