@@ -12,8 +12,14 @@ export default async function Home() {
     <main>
 
       {/* Hero Section */}
-      <section className="relative bg-cover bg-center bg-no-repeat"
-      style={{ backgroundImage: "url('/hero-bg.png')" }}>
+      <section className="relative">
+        <Image
+          src="/hero-bg.png"
+          alt="Hero background"
+          fill
+          priority
+          className="object-cover -z-10"
+        />
         <div className="max-w-7xl mx-auto px-6 py-8 lg:px-12 lg:py-28 grid grid-cols-1 lg:grid-cols-2 items-center gap-12">
           {/* Left Content */}
           <div className="space-y-6 text-center lg:text-left">
@@ -46,6 +52,8 @@ export default async function Home() {
               width={600}
               height={400}
               className="relative z-10 object-contain"
+              priority   // 👈 Add this
+              sizes="(max-width: 768px) 100vw, 50vw" 
             />
           </div>
         </div>
@@ -98,6 +106,7 @@ export default async function Home() {
               alt="React Presto"
               fill
               className="object-cover"
+              sizes="(max-width: 768px) 100vw, 50vw"
             />
             <div className="absolute inset-0 bg-gradient-to-r from-black/70 to-transparent flex flex-col justify-center p-6 md:p-10">
               <h3 className="text-2xl md:text-4xl font-bold">REACT PRESTO</h3>
