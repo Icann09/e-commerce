@@ -1,7 +1,17 @@
 import Image from "next/image";
-import { signInWithGoogle } from "@/lib/auth/actions";
+import { createAuthClient } from "better-auth/client";
+
+
 
 type Props = { variant?: "sign-in" | "sign-up" };
+
+const authClient = createAuthClient();
+const signInWithGoogle = async () => {
+  await authClient.signIn.social({
+    provider: "google",
+    callbackURL: "/", // 👈 go to home page after sign-in
+  });
+};
 
 export default function SocialProviders({ variant = "sign-in" }: Props) {
   return (

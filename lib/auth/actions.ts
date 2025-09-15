@@ -7,7 +7,7 @@ import { db } from "@/lib/db";
 import { guests } from "@/lib/db/schema/index";
 import { and, eq, lt } from "drizzle-orm";
 import { randomUUID } from "crypto";
-import { createAuthClient } from "better-auth/client";
+
 
 
 const COOKIE_OPTIONS = {
@@ -133,9 +133,6 @@ async function migrateGuestToUser() {
   cookieStore.delete("guest_session");
 }
 
-const authClient = createAuthClient();
-export const signInWithGoogle = async () => {
-  const data = await authClient.signIn.social({
-    provider: "google",
-  });
-};
+
+
+

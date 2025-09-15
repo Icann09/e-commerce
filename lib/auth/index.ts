@@ -1,6 +1,4 @@
 import { betterAuth } from "better-auth";
-// ✅ new (correct)
-
 import { drizzleAdapter } from "better-auth/adapters/drizzle";
 import { db } from "@/lib/db";
 import * as schema from "@/lib/db/schema/index";
@@ -22,16 +20,16 @@ export const auth = betterAuth({
     requireEmailVerification: false,
   },
   socialProviders: {
-        google: { 
-            clientId: process.env.GOOGLE_CLIENT_ID as string, 
-            clientSecret: process.env.GOOGLE_CLIENT_SECRET as string, 
-        }, 
+    google: {
+      clientId: process.env.GOOGLE_CLIENT_ID!,
+      clientSecret: process.env.GOOGLE_CLIENT_SECRET!,
     },
+  },
   sessions: {
     cookieCache: {
       enabled: true,
-      maxAge: 60 * 60 * 24 * 7
-    }
+      maxAge: 60 * 60 * 24 * 7,
+    },
   },
   cookies: {
     sessionToken: {
@@ -39,16 +37,17 @@ export const auth = betterAuth({
       options: {
         httpOnly: true,
         secure: process.env.NODE_ENV === "production",
-        sameSite: 'strict',
-        path: '/',
+        sameSite: "strict",
+        path: "/",
         maxAge: 60 * 60 * 24 * 7,
-      }
-    }
+      },
+    },
   },
   advanced: {
+    baseURL: process.env.NEXT_PUBLIC_APP_URL ?? "http://localhost:3000", // ✅ add this
     database: {
-      generateId: () => uuidv4()
-    }
+      generateId: () => uuidv4(),
+    },
   },
-  plugins: [nextCookies()]
+  plugins: [nextCookies()],
 });
