@@ -64,23 +64,24 @@ const signUpSchema = z.object({
 
 export async function signUp(formData: FormData) {
   const rawData = {
-    name: formData.get('name') as string,
-    email: formData.get('email') as string,
-    password: formData.get('password') as string,
-  }
+    name: formData.get("name") as string,
+    email: formData.get("email") as string,
+    password: formData.get("password") as string,
+  };
 
   const data = signUpSchema.parse(rawData);
 
-
+  const res = await auth.api.signUpEmail({
+    body: {
+      email: data.email,
+      password: data.password,
+      name: data.name,
+    },
+  });
 
   await migrateGuestToUser();
   return { ok: true, userId: res.user?.id };
 }
-
-const signInSchema = z.object({
-  email: emailSchema,
-  password: passwordSchema,
-});
 
 export async function signIn(formData: FormData) {
   const rawData = {
