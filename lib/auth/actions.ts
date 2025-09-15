@@ -8,8 +8,6 @@ import { guests } from "@/lib/db/schema/index";
 import { and, eq, lt } from "drizzle-orm";
 import { randomUUID } from "crypto";
 
-
-
 const COOKIE_OPTIONS = {
   httpOnly: true as const,
   secure: true as const,
@@ -64,10 +62,10 @@ const signUpSchema = z.object({
 
 export async function signUp(formData: FormData) {
   const rawData = {
-    name: formData.get("name") as string,
-    email: formData.get("email") as string,
-    password: formData.get("password") as string,
-  };
+    name: formData.get('name') as string,
+    email: formData.get('email') as string,
+    password: formData.get('password') as string,
+  }
 
   const data = signUpSchema.parse(rawData);
 
@@ -82,6 +80,11 @@ export async function signUp(formData: FormData) {
   await migrateGuestToUser();
   return { ok: true, userId: res.user?.id };
 }
+
+const signInSchema = z.object({
+  email: emailSchema,
+  password: passwordSchema,
+});
 
 export async function signIn(formData: FormData) {
   const rawData = {
@@ -131,9 +134,5 @@ async function migrateGuestToUser() {
   if (!token) return;
 
   await db.delete(guests).where(eq(guests.sessionToken, token));
-  cookieStore.delete("guest_session");
+  (await cookieStore).delete("guest_session");
 }
-
-
-
-
