@@ -9,8 +9,8 @@ const authClient = createAuthClient();
 const signInWithGoogle = async () => {
   await authClient.signIn.social({
     provider: "google",
-    callbackURL: "/", // 👈 go to home page after sign-in
-  });
+    callbackURL: "/api/auth/callback/google", // Correct
+});
 };
 
 export default function SocialProviders({ variant = "sign-in" }: Props) {
