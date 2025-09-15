@@ -7,6 +7,8 @@ import { db } from "@/lib/db";
 import { guests } from "@/lib/db/schema/index";
 import { and, eq, lt } from "drizzle-orm";
 import { randomUUID } from "crypto";
+import { createAuthClient } from "better-auth/client";
+
 
 const COOKIE_OPTIONS = {
   httpOnly: true as const,
@@ -69,13 +71,7 @@ export async function signUp(formData: FormData) {
 
   const data = signUpSchema.parse(rawData);
 
-  const res = await auth.api.signUpEmail({
-    body: {
-      email: data.email,
-      password: data.password,
-      name: data.name,
-    },
-  });
+
 
   await migrateGuestToUser();
   return { ok: true, userId: res.user?.id };
@@ -134,5 +130,12 @@ async function migrateGuestToUser() {
   if (!token) return;
 
   await db.delete(guests).where(eq(guests.sessionToken, token));
-  (await cookieStore).delete("guest_session");
+  cookieStore.delete("guest_session");
 }
+
+const authClient = createAuthClient();
+export const signInWithGoogle = async () => {
+  const data = await authClient.signIn.social({
+    provider: "google",
+  });
+};
