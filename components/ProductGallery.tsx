@@ -36,8 +36,12 @@ export default function ProductGallery({
     useVariantStore(
       (s) => s.selectedByProduct[productId] ?? Math.min(initialVariantIndex, Math.max(validVariants.length - 1, 0))
     );
+  
+  // console.log("valid variants are", JSON.stringify(validVariants, null, 2));
 
   const images = validVariants[variantIndex]?.images?.filter(isValidSrc) ?? [];
+  // console.log("images are", JSON.stringify(images, null, 2));
+  
   const [activeIndex, setActiveIndex] = useState(0);
   const mainRef = useRef<HTMLDivElement>(null);
 

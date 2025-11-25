@@ -19,7 +19,7 @@ function firstValidImage(images: string[]) {
 export default function ColorSwatches({ productId, variants, className = "" }: ColorSwatchesProps) {
   const setSelected = useVariantStore((s) => s.setSelected);
   const selected = useVariantStore((s) => s.getSelected(productId, 0));
-
+  // console.log(variants);
   return (
     <div className={`flex flex-wrap gap-3 ${className}`} role="listbox" aria-label="Choose color">
       {variants.map((v, i) => {

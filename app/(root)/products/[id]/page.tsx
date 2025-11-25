@@ -108,6 +108,9 @@ export default async function ProductDetailPage({ params }: { params: Promise<{ 
   }
 
   const { product, variants, images } = data;
+  // console.log(`variants are ${variants} `);
+  console.log("variants are", JSON.stringify(variants, null, 2));
+
 
   const galleryVariants: GalleryVariant[] = variants.map((v) => {
     const imgs = images
@@ -128,6 +131,12 @@ export default async function ProductDetailPage({ params }: { params: Promise<{ 
       images: imgs.length ? imgs : fallback,
     };
   }).filter((gv) => gv.images.length > 0);
+
+
+
+  console.log("galleryVariants are", JSON.stringify(galleryVariants, null, 2));
+
+
 
   const defaultVariant =
     variants.find((v) => v.id === product.defaultVariantId) || variants[0];

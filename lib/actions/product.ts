@@ -63,7 +63,7 @@ export async function getAllProducts(filters: NormalizedProductFilters): Promise
   }
 
   const hasSize = filters?.sizeSlugs?.length || 0 > 0;
-  const hasColor = filters?.colorSlugs?.length || 0 > 0;
+  const hasColor = (filters?.colorSlugs?.length ?? 0) > 0;
   const hasPrice = !!(filters.priceMin !== undefined || filters.priceMax !== undefined || filters?.priceRanges?.length);
 
   const variantConds: SQL[] = [];
@@ -115,31 +115,27 @@ export async function getAllProducts(filters: NormalizedProductFilters): Promise
     .from(productVariants)
     .where(variantConds.length ? and(...variantConds) : undefined)
     .as("v");
-  const imagesJoin = hasColor
-    ? db
-        .select({
-          productId: productImages.productId,
-          url: productImages.url,
-          rn: sql<number>`row_number() over (partition by ${productImages.productId} order by ${productImages.isPrimary} desc, ${productImages.sortOrder} asc)`.as("rn"),
-        })
-        .from(productImages)
-        .innerJoin(productVariants, eq(productVariants.id, productImages.variantId))
-        .where(
-          inArray(
-            productVariants.colorId,
-            db.select({ id: colors.id }).from(colors).where(inArray(colors.slug, filters.colorSlugs ?? []))
+  const imagesJoin = db
+    .select({
+      productId: productImages.productId,
+      url: productImages.url,
+      rn: sql<number>`row_number() over (partition by ${productImages.productId} order by ${productImages.isPrimary} desc, ${productImages.sortOrder} asc)`.as("rn"),
+    })
+    .from(productImages)
+    .leftJoin(productVariants, eq(productVariants.id, productImages.variantId))
+    .where(
+      hasColor
+        ? or(
+            inArray(
+              productVariants.colorId,
+              db.select({ id: colors.id }).from(colors).where(inArray(colors.slug, filters.colorSlugs ?? []))
+            ),
+            isNull(productImages.variantId)
           )
-        )
-        .as("pi")
-    : db
-        .select({
-          productId: productImages.productId,
-          url: productImages.url,
-          rn: sql<number>`row_number() over (partition by ${productImages.productId} order by ${productImages.isPrimary} desc, ${productImages.sortOrder} asc)`.as("rn"),
-        })
-        .from(productImages)
-        .where(isNull(productImages.variantId))
-        .as("pi")
+        : undefined
+    )
+    .as("pi");
+
 
 
   const baseWhere = conds.length ? and(...conds) : undefined;
@@ -173,7 +169,7 @@ export async function getAllProducts(filters: NormalizedProductFilters): Promise
       imageUrl: imageAgg,
     })
     .from(products)
-    .leftJoin(variantJoin, eq(variantJoin.productId, products.id))
+    .innerJoin(variantJoin, eq(variantJoin.productId, products.id))
     .leftJoin(imagesJoin, eq(imagesJoin.productId, products.id))
     .leftJoin(genders, eq(genders.id, products.genderId))
     .leftJoin(brands, eq(brands.id, products.brandId))
@@ -188,7 +184,7 @@ export async function getAllProducts(filters: NormalizedProductFilters): Promise
       cnt: count(sql<number>`distinct ${products.id}`),
     })
     .from(products)
-    .leftJoin(variantJoin, eq(variantJoin.productId, products.id))
+    .innerJoin(variantJoin, eq(variantJoin.productId, products.id))
     .leftJoin(genders, eq(genders.id, products.genderId))
     .leftJoin(brands, eq(brands.id, products.brandId))
     .leftJoin(categories, eq(categories.id, products.categoryId))

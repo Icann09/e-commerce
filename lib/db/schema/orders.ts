@@ -5,7 +5,14 @@ import { users } from './user';
 import { addresses } from './addresses';
 import { productVariants } from './variants';
 
-export const orderStatusEnum = pgEnum('order_status', ['pending', 'paid', 'shipped', 'delivered', 'cancelled']);
+export const orderStatusEnum = pgEnum('order_status', [
+  'pending',     // order created
+  'processing',  // being prepared
+  'shipped',     // sent by courier
+  'delivered',   // customer received
+  'cancelled',   // order cancelled
+]);
+
 
 export const orders = pgTable('orders', {
   id: uuid('id').primaryKey().defaultRandom(),
@@ -15,6 +22,7 @@ export const orders = pgTable('orders', {
   shippingAddressId: uuid('shipping_address_id').references(() => addresses.id, { onDelete: 'set null' }),
   billingAddressId: uuid('billing_address_id').references(() => addresses.id, { onDelete: 'set null' }),
   createdAt: timestamp('created_at').defaultNow().notNull(),
+  updatedAt: timestamp('updated_at').$onUpdate(() => new Date()),
 });
 
 export const orderItems = pgTable('order_items', {

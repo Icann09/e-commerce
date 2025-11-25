@@ -4,7 +4,15 @@ import { z } from 'zod';
 import { orders } from './orders';
 
 export const paymentMethodEnum = pgEnum('payment_method', ['stripe', 'paypal', 'cod']);
-export const paymentStatusEnum = pgEnum('payment_status', ['initiated', 'completed', 'failed']);
+export const paymentStatusEnum = pgEnum('payment_status', [
+  'initiated',  // user starts payment
+  'pending',    // waiting for gateway
+  'completed',  // success
+  'failed',     // user/bank error
+  'expired',    // payment window expired
+  'refunded'    // after-paid refund
+]);
+
 
 export const payments = pgTable('payments', {
   id: uuid('id').primaryKey().defaultRandom(),
@@ -12,7 +20,8 @@ export const payments = pgTable('payments', {
   method: paymentMethodEnum('method').notNull(),
   status: paymentStatusEnum('status').notNull().default('initiated'),
   paidAt: timestamp('paid_at'),
-  transactionId: text('transaction_id'),
+  transactionId: text('transaction_id').unique(),
+  createdAt: timestamp('created_at').defaultNow().notNull(),
 });
 
 export const paymentsRelations = relations(payments, ({ one }) => ({
@@ -22,15 +31,46 @@ export const paymentsRelations = relations(payments, ({ one }) => ({
   }),
 }));
 
-export const insertPaymentSchema = z.object({
-  orderId: z.string().uuid(),
-  method: z.enum(['stripe', 'paypal', 'cod']),
-  status: z.enum(['initiated', 'completed', 'failed']).optional(),
-  paidAt: z.date().optional().nullable(),
-  transactionId: z.string().optional().nullable(),
-});
-export const selectPaymentSchema = insertPaymentSchema.extend({
+export const insertPaymentSchema = z
+  .object({
+    orderId: z.string().uuid(),
+    method: z.enum(['stripe', 'paypal', 'cod']),
+    status: z
+      .enum([
+        'initiated',
+        'pending',
+        'completed',
+        'failed',
+        'expired',
+        'refunded',
+      ])
+      .optional(),
+    paidAt: z.date().nullable().optional(),
+    transactionId: z.string().nullable().optional(),
+  })
+  .superRefine((data, ctx) => {
+    // Rule: COD cannot have transactionId or paidAt
+    if (data.method === 'cod') {
+      if (data.transactionId != null) {
+        ctx.addIssue({
+          code: z.ZodIssueCode.custom,
+          message: 'COD payments cannot have a transactionId',
+          path: ['transactionId'],
+        });
+      }
+      if (data.paidAt != null) {
+        ctx.addIssue({
+          code: z.ZodIssueCode.custom,
+          message: 'COD payments cannot have paidAt',
+          path: ['paidAt'],
+        });
+      }
+    }
+  });
+
+export const selectPaymentSchema = insertPaymentSchema.safeExtend({
   id: z.string().uuid(),
 });
+
 export type InsertPayment = z.infer<typeof insertPaymentSchema>;
 export type SelectPayment = z.infer<typeof selectPaymentSchema>;
