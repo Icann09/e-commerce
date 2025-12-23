@@ -40,7 +40,7 @@ export default function ProductGallery({
   // console.log("valid variants are", JSON.stringify(validVariants, null, 2));
 
   const images = validVariants[variantIndex]?.images?.filter(isValidSrc) ?? [];
-  // console.log("images are", JSON.stringify(images, null, 2));
+  console.log("images are", JSON.stringify(images, null, 2));
   
   const [activeIndex, setActiveIndex] = useState(0);
   const mainRef = useRef<HTMLDivElement>(null);
@@ -68,7 +68,7 @@ export default function ProductGallery({
     window.addEventListener("keydown", onKey);
     return () => window.removeEventListener("keydown", onKey);
   }, [go]);
-
+  console.log(images);
   return (
     <section className={`flex w-full flex-col gap-4 lg:flex-row ${className}`}>
       <div className="order-2 flex gap-3 overflow-x-auto lg:order-1 lg:flex-col">
@@ -84,15 +84,17 @@ export default function ProductGallery({
         ))}
       </div>
 
-      <div ref={mainRef} className="order-1 relative w-full h-[500px] overflow-hidden rounded-xl bg-light-200 lg:order-2">
+      <div ref={mainRef} className="order-1 relative w-full h-[675px] overflow-hidden rounded-xl bg-light-200 lg:order-2">
         {images.length > 0 ? (
           <>
             <Image
               src={images[activeIndex]}
               alt="Product image"
-              fill
+fill
               sizes="(min-width:1024px) 720px, 100vw"
-              className="object-cover"
+            
+              
+              className="object-cover  "
               priority
             />
 
