@@ -31,6 +31,9 @@ export default function ProductGallery({
     () => variants.filter((v) => Array.isArray(v.images) && v.images.some(isValidSrc)),
     [variants]
   );
+  console.log("gallery variants are", JSON.stringify(variants, null, 2));
+
+
 
   const variantIndex =
     useVariantStore(
@@ -68,7 +71,7 @@ export default function ProductGallery({
     window.addEventListener("keydown", onKey);
     return () => window.removeEventListener("keydown", onKey);
   }, [go]);
-  console.log(images);
+
   return (
     <section className={`flex w-full flex-col gap-4 lg:flex-row ${className}`}>
       <div className="order-2 flex gap-3 overflow-x-auto lg:order-1 lg:flex-col">

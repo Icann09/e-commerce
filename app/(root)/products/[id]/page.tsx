@@ -3,6 +3,7 @@ import { Suspense } from "react";
 import { Heart, ShoppingBag, Star } from "lucide-react";
 import { ColorSwatches, Card, CollapsibleSection, ProductGallery, SizePicker } from "@/components";
 import { getProduct, getProductReviews, getRecommendedProducts, type Review, type RecommendedProduct } from "@/lib/actions/product";
+import AddToBagButton from "@/components/AddToBagBuuton";
 
 type GalleryVariant = { color: string; images: string[] };
 
@@ -108,8 +109,7 @@ export default async function ProductDetailPage({ params }: { params: Promise<{ 
   }
 
   const { product, variants, images } = data;
-  // console.log(`variants are ${variants} `);
-  // console.log("variants are", JSON.stringify(variants, null, 2));
+
 
 
   const galleryVariants: GalleryVariant[] = variants.map((v) => {
@@ -121,6 +121,7 @@ export default async function ProductDetailPage({ params }: { params: Promise<{ 
         return (a.sortOrder ?? 0) - (b.sortOrder ?? 0);
       })
       .map((img) => img.url);
+    
 
     const fallback = images
       .filter((img) => img.variantId === null)
@@ -137,11 +138,7 @@ export default async function ProductDetailPage({ params }: { params: Promise<{ 
     };
   }).filter((gv) => gv.images.length > 0);
 
-
-
-  console.log("galleryVariants are", JSON.stringify(galleryVariants, null, 2));
-
-
+  console.log(`galleryVariants are ${galleryVariants}`);
 
   const defaultVariant =
     variants.find((v) => v.id === product.defaultVariantId) || variants[0];
@@ -196,10 +193,13 @@ export default async function ProductDetailPage({ params }: { params: Promise<{ 
           <SizePicker />
 
           <div className="flex flex-col gap-3">
-            <button className="flex items-center justify-center gap-2 rounded-full bg-dark-900 px-6 py-4 text-body-medium text-light-100 transition hover:opacity-90 focus:outline-none focus-visible:ring-2 focus-visible:ring-[--color-dark-500]">
-              <ShoppingBag className="h-5 w-5" />
-              Add to Bag
-            </button>
+            <AddToBagButton
+              productId={product.id}
+              variants={variants.map(v => ({ id: v.id }))}
+            />
+
+
+
             <button className="flex items-center justify-center gap-2 rounded-full border border-light-300 px-6 py-4 text-body-medium text-dark-900 transition hover:border-dark-500 focus:outline-none focus-visible:ring-2 focus-visible:ring-[--color-dark-500]">
               <Heart className="h-5 w-5" />
               Favorite

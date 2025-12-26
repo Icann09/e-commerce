@@ -19,6 +19,8 @@ interface CartState {
   getItemCount: () => number;
 }
 
+
+
 export const useCartStore = create<CartState>()(
   persist(
     (set, get) => ({
@@ -70,3 +72,5 @@ export const useCartStore = create<CartState>()(
     }
   )
 );
+
+

@@ -3,7 +3,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { useState } from "react";
-import { User } from "lucide-react";
+import { User, Menu, Icon, SquareX } from "lucide-react";
 
 
 interface User {
@@ -81,10 +81,11 @@ export default function Navbar ({ user }: { user: User | null } ) {
           aria-expanded={open}
           onClick={() => setOpen((v) => !v)}
         >
-          <span className="sr-only">Toggle navigation</span>
-          <span className="mb-1 block h-0.5 w-6 bg-dark-900"></span>
-          <span className="mb-1 block h-0.5 w-6 bg-dark-900"></span>
-          <span className="block h-0.5 w-6 bg-dark-900"></span>
+          {open! ? (
+            <SquareX />
+          ) : (
+          <Menu />
+          )}
         </button>
       </nav>
 
