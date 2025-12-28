@@ -5,7 +5,16 @@ import { ColorSwatches, Card, CollapsibleSection, ProductGallery, SizePicker } f
 import { getProduct, getProductReviews, getRecommendedProducts, type Review, type RecommendedProduct } from "@/lib/actions/product";
 import AddToBagButton from "@/components/AddToBagBuuton";
 
-type GalleryVariant = { color: string; images: string[] };
+type GalleryColor = {
+  color: string;
+  images: string[];
+  sizes: {
+    variantId: string;
+    sizeId: string;
+    sizeLabel: string;
+  }[];
+};
+
 
 function formatPrice(price: number | null | undefined) {
   if (price === null || price === undefined) return undefined;
@@ -111,37 +120,58 @@ export default async function ProductDetailPage({ params }: { params: Promise<{ 
   const { product, variants, images } = data;
 
 
-
-  const galleryVariants: GalleryVariant[] = variants.map((v) => {
-    const imgs = images
-      .filter((img) => img.variantId === v.id)
-      .sort((a, b) => {
-        if (a.isPrimary && !b.isPrimary) return -1;
-        if (!a.isPrimary && b.isPrimary) return 1;
-        return (a.sortOrder ?? 0) - (b.sortOrder ?? 0);
-      })
-      .map((img) => img.url);
-    
-
-    const fallback = images
-      .filter((img) => img.variantId === null)
-      .sort((a, b) => {
-        if (a.isPrimary && !b.isPrimary) return -1;
-        if (!a.isPrimary && b.isPrimary) return 1;
-        return (a.sortOrder ?? 0) - (b.sortOrder ?? 0);
-      })
-      .map((img) => img.url);
-
-    return {
-      color: v.color?.name || "Default",
-      images: imgs.length ? imgs : fallback,
-    };
-  }).filter((gv) => gv.images.length > 0);
-
-  console.log(`galleryVariants are ${galleryVariants}`);
-
   const defaultVariant =
-    variants.find((v) => v.id === product.defaultVariantId) || variants[0];
+  variants.find(v => v.id === product.defaultVariantId) || variants[0];
+
+  const galleryColors: GalleryColor[] = Object.values(
+  variants.reduce<Record<string, GalleryColor>>((acc, v) => {
+    const colorName = v.color?.name || "Default";
+
+    if (!acc[colorName]) {
+      acc[colorName] = {
+        color: colorName,
+        images: [],
+        sizes: [],
+      };
+    }
+
+    // 1️⃣ sizes
+    if (v.size) {
+      acc[colorName].sizes.push({
+        variantId: v.id,
+        sizeId: v.size.id,
+        sizeLabel: v.size.label,
+      });
+    }
+
+    // 2️⃣ images (STRICT rules)
+    const variantImages = images.filter(img => img.variantId === v.id);
+
+const fallbackImages =
+  v.id === defaultVariant.id
+    ? images.filter(img => img.variantId === null)
+    : [];
+
+[...variantImages, ...fallbackImages]
+  .sort((a, b) => {
+    if (a.isPrimary && !b.isPrimary) return -1;
+    if (!a.isPrimary && b.isPrimary) return 1;
+    return (a.sortOrder ?? 0) - (b.sortOrder ?? 0);
+  })
+  .forEach(img => {
+    if (!acc[colorName].images.includes(img.url)) {
+      acc[colorName].images.push(img.url);
+    }
+  });
+
+
+    return acc;
+  }, {})
+);
+
+
+  console.log(`galleryColors are ${galleryColors}`);
+
 
   const basePrice = defaultVariant ? Number(defaultVariant.price) : null;
   const salePrice = defaultVariant?.salePrice ? Number(defaultVariant.salePrice) : null;
@@ -165,8 +195,9 @@ export default async function ProductDetailPage({ params }: { params: Promise<{ 
       </nav>
 
       <section className="grid grid-cols-1 gap-10 lg:grid-cols-[1fr_480px]">
-        {galleryVariants.length > 0 && (
-          <ProductGallery productId={product.id} variants={galleryVariants} className="lg:sticky lg:top-6" />
+        {galleryColors.length > 0 && (
+<ProductGallery productId={product.id} colors={galleryColors} />
+
         )}
 
         <div className="flex flex-col gap-6">
@@ -188,8 +219,9 @@ export default async function ProductDetailPage({ params }: { params: Promise<{ 
               </>
             )}
           </div>
+      
 
-          <ColorSwatches productId={product.id} variants={galleryVariants} />
+          <ColorSwatches productId={product.id} variants={galleryColors} />
           <SizePicker />
 
           <div className="flex flex-col gap-3">

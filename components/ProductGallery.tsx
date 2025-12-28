@@ -5,15 +5,15 @@ import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { ChevronLeft, ChevronRight, ImageOff } from "lucide-react";
 import { useVariantStore } from "@/store/variant";
 
-type Variant = {
+type GalleryColor = {
   color: string;
   images: string[];
 };
 
 export interface ProductGalleryProps {
   productId: string;
-  variants: Variant[];
-  initialVariantIndex?: number;
+  colors: GalleryColor[];
+  initialColorIndex?: number;
   className?: string;
 }
 
@@ -23,26 +23,28 @@ function isValidSrc(src: string | undefined | null) {
 
 export default function ProductGallery({
   productId,
-  variants,
-  initialVariantIndex = 0,
+  colors,
+  initialColorIndex = 0,
   className = "",
 }: ProductGalleryProps) {
-  const validVariants = useMemo(
-    () => variants.filter((v) => Array.isArray(v.images) && v.images.some(isValidSrc)),
-    [variants]
+const validColors = useMemo(
+  () => colors.filter(c => c.images?.some(isValidSrc)),
+  [colors]
+);
+  console.log("colors variants are", JSON.stringify(colors, null, 2));
+
+
+
+  const colorIndex =
+  useVariantStore(
+    (s) =>
+      s.selectedByProduct[productId] ??
+      Math.min(initialColorIndex, Math.max(validColors.length - 1, 0))
   );
-  console.log("gallery variants are", JSON.stringify(variants, null, 2));
-
-
-
-  const variantIndex =
-    useVariantStore(
-      (s) => s.selectedByProduct[productId] ?? Math.min(initialVariantIndex, Math.max(validVariants.length - 1, 0))
-    );
   
   // console.log("valid variants are", JSON.stringify(validVariants, null, 2));
 
-  const images = validVariants[variantIndex]?.images?.filter(isValidSrc) ?? [];
+const images = validColors[colorIndex]?.images ?? [];
   console.log("images are", JSON.stringify(images, null, 2));
   
   const [activeIndex, setActiveIndex] = useState(0);
@@ -50,7 +52,7 @@ export default function ProductGallery({
 
   useEffect(() => {
     setActiveIndex(0);
-  }, [variantIndex]);
+  }, [colorIndex]);
 
   const go = useCallback(
     (dir: -1 | 1) => {
