@@ -4,6 +4,7 @@ import { Heart, ShoppingBag, Star } from "lucide-react";
 import { ColorSwatches, Card, CollapsibleSection, ProductGallery, SizePicker } from "@/components";
 import { getProduct, getProductReviews, getRecommendedProducts, type Review, type RecommendedProduct } from "@/lib/actions/product";
 import AddToBagButton from "@/components/AddToBagBuuton";
+import ProductVariants from "@/components/ProductVariant";
 
 type GalleryColor = {
   color: string;
@@ -140,7 +141,7 @@ export default async function ProductDetailPage({ params }: { params: Promise<{ 
       acc[colorName].sizes.push({
         variantId: v.id,
         sizeId: v.size.id,
-        sizeLabel: v.size.label,
+        sizeLabel: v.size.name,
       });
     }
 
@@ -221,14 +222,17 @@ const fallbackImages =
           </div>
       
 
-          <ColorSwatches productId={product.id} variants={galleryColors} />
-          <SizePicker />
+          <ProductVariants
+  productId={product.id}
+  galleryColors={galleryColors}
+/>
+
 
           <div className="flex flex-col gap-3">
-            <AddToBagButton
+            {/* <AddToBagButton
               productId={product.id}
               variants={variants.map(v => ({ id: v.id }))}
-            />
+            /> */}
 
 
 

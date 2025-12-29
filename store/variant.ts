@@ -2,20 +2,38 @@
 
 import { create } from "zustand";
 
-type State = {
-  selectedByProduct: Record<string, number>;
-  setSelected: (productId: string, index: number) => void;
-  getSelected: (productId: string, fallback?: number) => number;
+type VariantState = {
+  // color selection
+  selectedColorByProduct: Record<string, number>;
+  setColorIndex: (productId: string, index: number) => void;
+
+  // size / variant selection
+  selectedVariantByProduct: Record<string, string | undefined>;
+  setSelectedVariant: (productId: string, variantId: string) => void;
 };
 
-export const useVariantStore = create<State>((set, get) => ({
-  selectedByProduct: {},
-  setSelected: (productId, index) =>
-    set((s) => ({
-      selectedByProduct: { ...s.selectedByProduct, [productId]: index },
+export const useVariantStore = create<VariantState>((set) => ({
+  selectedColorByProduct: {},
+  selectedVariantByProduct: {},
+
+  setColorIndex: (productId, index) =>
+    set((state) => ({
+      selectedColorByProduct: {
+        ...state.selectedColorByProduct,
+        [productId]: index,
+      },
+      // 🔥 reset size when color changes
+      selectedVariantByProduct: {
+        ...state.selectedVariantByProduct,
+        [productId]: undefined,
+      },
     })),
-  getSelected: (productId, fallback = 0) => {
-    const map = get().selectedByProduct;
-    return map[productId] ?? fallback;
-  },
+
+  setSelectedVariant: (productId, variantId) =>
+    set((state) => ({
+      selectedVariantByProduct: {
+        ...state.selectedVariantByProduct,
+        [productId]: variantId,
+      },
+    })),
 }));

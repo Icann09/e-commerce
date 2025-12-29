@@ -35,17 +35,16 @@ const validColors = useMemo(
 
 
 
-  const colorIndex =
-  useVariantStore(
-    (s) =>
-      s.selectedByProduct[productId] ??
-      Math.min(initialColorIndex, Math.max(validColors.length - 1, 0))
+const colorIndex = useVariantStore((s) => {
+  const map = s.selectedColorByProduct ?? {};
+  return (
+    map[productId] ??
+    Math.min(initialColorIndex, Math.max(validColors.length - 1, 0))
   );
-  
-  // console.log("valid variants are", JSON.stringify(validVariants, null, 2));
+});
 
 const images = validColors[colorIndex]?.images ?? [];
-  console.log("images are", JSON.stringify(images, null, 2));
+
   
   const [activeIndex, setActiveIndex] = useState(0);
   const mainRef = useRef<HTMLDivElement>(null);
