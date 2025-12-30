@@ -6,6 +6,7 @@ import { useState } from "react";
 import { User, Menu, Icon, SquareX } from "lucide-react";
 
 
+
 interface User {
   name: string;
   email: string;
@@ -56,14 +57,14 @@ export default function Navbar ({ user }: { user: User | null } ) {
           </button>
           <p>|</p>
           {user ? (
-            <button className="flex gap-2">Hi, {user.name.split(" ")[0]} <User /> </button>
+            <Link href="/profile/my-orders" className="flex gap-2">Hi, {user.name.split(" ")[0]} <User /> </Link>
             ) : (
               <div className="flex gap-6">
                 <Link href="/sign-up" aria-label="Sign-In">
                   Join Us
                 </Link>
                 <p>|</p>
-                <Link href="/sign-up" aria-label="Sign-In">
+                <Link href="/sign-in" aria-label="Sign-In">
                   Sign In
                 </Link>
               </div>
@@ -94,7 +95,7 @@ export default function Navbar ({ user }: { user: User | null } ) {
         className={`border-t border-light-300 md:hidden ${open ? "block" : "hidden"}`}
       >
           {user ? (
-            <button className="flex gap-2 px-4 py-3">Hi, {user.name.split(" ")[0]} <User /> </button>
+            <Link href="/profile/my-orders" className="flex gap-2 px-4 py-3">Hi, {user.name.split(" ")[0]} <User /> </Link>
             ) : null
           }
         <ul className="space-y-2 px-4 py-3">
