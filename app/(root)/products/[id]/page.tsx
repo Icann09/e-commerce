@@ -229,10 +229,9 @@ const fallbackImages =
 
 
           <div className="flex flex-col gap-3">
-            {/* <AddToBagButton
+            <AddToBagButton
               productId={product.id}
-              variants={variants.map(v => ({ id: v.id }))}
-            /> */}
+            />
 
 
 

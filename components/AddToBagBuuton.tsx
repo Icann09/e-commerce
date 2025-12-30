@@ -6,24 +6,21 @@ import { useTransition } from "react";
 
 type Props = {
   productId: string;
-  variants: { id: string }[];
 };
 
-export default function AddToBagButton({ productId, variants }: Props) {
+export default function AddToBagButton({ productId }: Props) {
   const [pending, startTransition] = useTransition();
 
-  const variantIndex = useVariantStore(
-    (s) => s.selectedByProduct[productId] ?? 0
+  const selectedVariantId = useVariantStore(
+    (s) => s.selectedVariantByProduct[productId]
   );
 
-  const currentVariant = variants[variantIndex];
-
   const onAdd = () => {
-    if (!currentVariant) return;
+    if (!selectedVariantId) return;
 
     startTransition(async () => {
       await addToCart({
-        productVariantId: currentVariant.id,
+        productVariantId: selectedVariantId,
         quantity: 1,
       });
     });
@@ -32,8 +29,8 @@ export default function AddToBagButton({ productId, variants }: Props) {
   return (
     <button
       onClick={onAdd}
-      disabled={pending}
-      className="rounded-full bg-dark-900 px-6 py-4 text-light-100"
+      disabled={!selectedVariantId || pending}
+      className="rounded-full bg-dark-900 px-6 py-4 text-light-100 disabled:opacity-50"
     >
       {pending ? "Adding…" : "Add to Bag"}
     </button>
