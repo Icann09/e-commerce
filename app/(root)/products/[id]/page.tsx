@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { Suspense } from "react";
-import { Heart, ShoppingBag, Star } from "lucide-react";
-import { ColorSwatches, Card, CollapsibleSection, ProductGallery, SizePicker } from "@/components";
+import { Heart, Star } from "lucide-react";
+import { Card, CollapsibleSection, ProductGallery } from "@/components";
 import { getProduct, getProductReviews, getRecommendedProducts, type Review, type RecommendedProduct } from "@/lib/actions/product";
 import AddToBagButton from "@/components/AddToBagBuuton";
 import ProductVariants from "@/components/ProductVariant";

@@ -1,7 +1,5 @@
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
-import { auth } from "@/lib/auth";
-import { headers as nextHeaders } from "next/headers";
 import { getCurrentUser } from "@/lib/auth/actions";
 
 

@@ -3,7 +3,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { useState } from "react";
-import { User, Menu, Icon, SquareX } from "lucide-react";
+import { User, Menu, SquareX } from "lucide-react";
 
 
 
