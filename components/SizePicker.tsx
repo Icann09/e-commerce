@@ -28,7 +28,7 @@ export default function SizePicker({
     (s) => s.selectedVariantByProduct[productId]
   );
 
-  console.log("sizes are", JSON.stringify(sizes, null, 2));
+  // console.log("sizes are", JSON.stringify(sizes, null, 2));
 
 
   const setSelectedVariant = useVariantStore(

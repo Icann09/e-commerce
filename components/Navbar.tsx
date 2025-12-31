@@ -53,7 +53,9 @@ export default function Navbar ({ user }: { user: User | null } ) {
           </button>
           <p>|</p>
           <button className="text-body text-dark-900 font-semibold transition-colors hover:text-dark-700">
-            My Cart (2)
+            <Link href="/cart">
+              My Cart
+            </Link>
           </button>
           <p>|</p>
           {user ? (

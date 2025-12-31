@@ -1,38 +1,56 @@
 "use client";
 
-import { addToCart } from "@/lib/actions/cart";
 import { useVariantStore } from "@/store/variant";
-import { useTransition } from "react";
+import { useCartStore } from "@/store/cart";
 
 type Props = {
   productId: string;
+  name: string;
+  price: number;
+  galleryColors: {
+    color: string;
+    images: string[];
+  }[];
 };
 
-export default function AddToBagButton({ productId }: Props) {
-  const [pending, startTransition] = useTransition();
-
+export default function AddToBagButton({
+  productId,
+  name,
+  price,
+  galleryColors,
+}: Props) {
   const selectedVariantId = useVariantStore(
     (s) => s.selectedVariantByProduct[productId]
   );
 
-  const onAdd = () => {
-    if (!selectedVariantId) return;
+  const selectedColorIndex = useVariantStore(
+    (s) => s.selectedColorByProduct[productId] ?? 0
+  );
 
-    startTransition(async () => {
-      await addToCart({
-        productVariantId: selectedVariantId,
-        quantity: 1,
-      });
+  const addItem = useCartStore((s) => s.addItem);
+
+  // ✅ correct image for selected color
+  const image =
+    galleryColors[selectedColorIndex]?.images[0];
+
+  const onAdd = () => {
+    if (!selectedVariantId || !image) return;
+
+    addItem({
+      id: `${productId}-${selectedVariantId}`,
+      name,
+      price,
+      image,
     });
   };
 
   return (
     <button
       onClick={onAdd}
-      disabled={!selectedVariantId || pending}
+      disabled={!selectedVariantId}
       className="rounded-full bg-dark-900 px-6 py-4 text-light-100 disabled:opacity-50"
     >
-      {pending ? "Adding…" : "Add to Bag"}
+      Add to Bag
     </button>
   );
 }

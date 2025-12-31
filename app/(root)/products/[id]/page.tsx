@@ -229,9 +229,13 @@ const fallbackImages =
 
 
           <div className="flex flex-col gap-3">
-            <AddToBagButton
-              productId={product.id}
-            />
+          <AddToBagButton
+  productId={product.id}
+  name={product.name}
+  price={displayPrice ?? 0}
+  galleryColors={galleryColors}
+/>
+
 
 
 

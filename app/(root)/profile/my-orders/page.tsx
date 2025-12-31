@@ -13,7 +13,7 @@ const orders = [
     size: "10",
     quantity: 2,
     price: "$98.30",
-    image: "/shoe-1.png",
+    image: "/shoes/shoe-1.jpg",
     cancellable: true,
   },
   {
@@ -25,7 +25,7 @@ const orders = [
     size: "10",
     quantity: 2,
     price: "$104.26",
-    image: "/shoe-2.png",
+    image: "/shoes/shoe-2.webp",
     cancellable: true,
   },
   {
@@ -37,7 +37,7 @@ const orders = [
     size: "8",
     quantity: 1,
     price: "$185.67",
-    image: "/shoe-3.png",
+    image: "/shoes/shoe-3.webp",
     cancellable: true,
   },
 ];
