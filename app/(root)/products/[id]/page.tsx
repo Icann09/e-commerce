@@ -5,6 +5,12 @@ import { Card, CollapsibleSection, ProductGallery } from "@/components";
 import { getProduct, getProductReviews, getRecommendedProducts, type Review, type RecommendedProduct } from "@/lib/actions/product";
 import AddToBagButton from "@/components/AddToBagBuuton";
 import ProductVariants from "@/components/ProductVariant";
+import AddToFavoritesButton from "@/components/AddToFavoritesButton";
+import { db } from "@/lib/db";
+import { wishlists } from "@/lib/db/schema";
+import { and, eq } from "drizzle-orm";
+import { getCurrentUser } from "@/lib/auth/actions";
+
 
 type GalleryColor = {
   color: string;
@@ -171,7 +177,7 @@ const fallbackImages =
 );
 
 
-  console.log(`galleryColors are ${galleryColors}`);
+  // console.log(`galleryColors are ${galleryColors}`);
 
 
   const basePrice = defaultVariant ? Number(defaultVariant.price) : null;
@@ -187,6 +193,19 @@ const fallbackImages =
 
   const subtitle =
     product.gender?.label ? `${product.gender.label} Shoes` : undefined;
+
+  const user = await getCurrentUser();
+
+  const isWishlisted = user
+    ? await db.query.wishlists.findFirst({
+        where: and(
+          eq(wishlists.userId, user.id),
+          eq(wishlists.productId, product.id)
+        ),
+      })
+    : null;
+
+
 
   return (
     <main className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
@@ -239,10 +258,11 @@ const fallbackImages =
 
 
 
-            <button className="flex items-center justify-center gap-2 rounded-full border border-light-300 px-6 py-4 text-body-medium text-dark-900 transition hover:border-dark-500 focus:outline-none focus-visible:ring-2 focus-visible:ring-[--color-dark-500]">
-              <Heart className="h-5 w-5" />
-              Favorite
-            </button>
+<AddToFavoritesButton
+  productId={product.id}
+  initialAdded={!!isWishlisted}
+/>
+
           </div>
 
           <CollapsibleSection title="Product Details" defaultOpen>
