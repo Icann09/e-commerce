@@ -19,7 +19,7 @@ export default function FavoriteCard({
   price,
   image,
   badge,
-  badgeColor = "green",
+  badgeColor,
   colors,
 }: Props) {
   return (

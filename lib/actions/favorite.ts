@@ -171,19 +171,19 @@ export async function fetchWishlist(userId: string) {
     .where(eq(wishlists.userId, userId));
 
   return rows.map((row) => {
-    // 🔥 forced promo rules
-    const badge = "Extra 20% off";
-    const badgeColor = "green";
+  const badge = "Extra 20% off";
+  const badgeColor: "green" | "orange" = "green";
 
-    return {
-      id: row.id,
-      name: row.name,
-      category: row.category,
-      price: Number(row.price),
-      image: row.image ?? "/placeholder.png",
-      colors: row.colors ?? 1,
-      badge,
-      badgeColor,
-    };
-  });
+  return {
+    id: row.id,
+    name: row.name,
+    category: row.category,
+    price: Number(row.price),
+    image: row.image ?? "/placeholder.png",
+    colors: row.colors ?? 1,
+    badge,
+    badgeColor,
+  };
+});
+
 }
