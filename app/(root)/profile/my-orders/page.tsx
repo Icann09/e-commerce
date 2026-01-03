@@ -49,7 +49,7 @@ export default function MyOrdersPage() {
         {orders.map((order) => (
           <div
             key={order.id}
-            className="max-w-3xl flex flex-col gap-4 rounded-lg border p-4 sm:flex-row sm:items-center"
+            className="flex flex-col gap-4 rounded-lg border p-4 sm:flex-row sm:items-center"
           >
             {/* Product Image */}
             <div className="w-full sm:w-28">

@@ -5,6 +5,15 @@ import { wishlists } from "../db/schema";
 import { getCurrentUser } from "../auth/actions";
 import { eq, and } from "drizzle-orm";
 import { revalidatePath } from "next/cache";
+import { products } from "../db/schema";
+import { productImages } from "../db/schema";
+import { productVariants } from "../db/schema";
+import { categories } from "../db/schema";
+import { sql } from "drizzle-orm";
+
+
+
+
 
 export async function addToWishlist(productId: string) {
   const user = await getCurrentUser();
@@ -104,4 +113,77 @@ export async function toggleWishlist(productId: string) {
   revalidatePath(`/products/${productId}`);
 
   return { added: !existing };
+}
+
+
+
+
+export async function fetchWishlist(userId: string) {
+  const rows = await db
+    .select({
+      id: wishlists.id,
+      addedAt: wishlists.addedAt,
+
+      productId: products.id,
+      name: products.name,
+
+      // default variant price
+      price: productVariants.price,
+
+      // primary image
+      image: productImages.url,
+
+      category: categories.name,
+
+      // DISTINCT color count
+      colors: sql<number>`
+  (
+    select count(distinct pv.color_id)
+    from product_variants pv
+    where pv.product_id = ${products.id}
+  )
+`,
+    })
+    .from(wishlists)
+    .innerJoin(products, eq(wishlists.productId, products.id))
+    .innerJoin(
+      productVariants,
+      eq(products.defaultVariantId, productVariants.id)
+    )
+    .innerJoin(categories, eq(products.categoryId, categories.id))
+    .leftJoin(
+      productImages,
+      and(
+        eq(productImages.productId, products.id),
+        eq(productImages.id, sql`
+          (
+            select pi.id
+            from product_images pi
+            where
+              pi.product_id = ${products.id}
+              and pi.variant_id is null
+            order by pi.sort_order asc
+            limit 1
+          )
+        `)
+      )
+    )
+    .where(eq(wishlists.userId, userId));
+
+  return rows.map((row) => {
+    // 🔥 forced promo rules
+    const badge = "Extra 20% off";
+    const badgeColor = "green";
+
+    return {
+      id: row.id,
+      name: row.name,
+      category: row.category,
+      price: Number(row.price),
+      image: row.image ?? "/placeholder.png",
+      colors: row.colors ?? 1,
+      badge,
+      badgeColor,
+    };
+  });
 }
