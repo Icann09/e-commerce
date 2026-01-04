@@ -9,6 +9,7 @@ type Props = {
   price: number;
   quantity: number;
   image?: string;
+  size: string
 };
 
 export default function CartItem({
@@ -17,6 +18,7 @@ export default function CartItem({
   price,
   quantity,
   image,
+  size,
 }: Props) {
   const updateQuantity = useCartStore((s) => s.updateQuantity);
   const removeItem = useCartStore((s) => s.removeItem);
@@ -39,6 +41,7 @@ export default function CartItem({
 
         <div className="mt-3 flex items-center gap-3">
           <button onClick={() => updateQuantity(id, quantity - 1)}>−</button>
+
           <span>{quantity}</span>
           <button onClick={() => updateQuantity(id, quantity + 1)}>+</button>
 
@@ -54,6 +57,8 @@ export default function CartItem({
       <p className="text-body-medium text-dark-900">
         ${(price * quantity).toFixed(2)}
       </p>
+          <span>Size : {size}</span>
+
     </div>
   );
 }

@@ -29,20 +29,27 @@ export default function AddToBagButton({
 
   const addItem = useCartStore((s) => s.addItem);
 
+  const selectedVariant = useVariantStore(
+  (s) => s.selectedVariantByProduct[productId]
+);
+
+
   // ✅ correct image for selected color
   const image =
     galleryColors[selectedColorIndex]?.images[0];
 
   const onAdd = () => {
-    if (!selectedVariantId || !image) return;
+  if (!selectedVariant || !image) return;
 
-    addItem({
-      id: `${productId}-${selectedVariantId}`,
-      name,
-      price,
-      image,
-    });
-  };
+  addItem({
+    id: `${productId}-${selectedVariant.id}`,
+    name,
+    price,
+    image,
+    size: selectedVariant.size, // ✅ works
+  });
+};
+
 
   return (
     <button

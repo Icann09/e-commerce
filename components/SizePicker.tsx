@@ -24,18 +24,15 @@ export default function SizePicker({
   sizes,
   className = "",
 }: SizePickerProps) {
-  const selectedVariantId = useVariantStore(
+
+  const selectedVariant = useVariantStore(
     (s) => s.selectedVariantByProduct[productId]
   );
-
-  // console.log("sizes are", JSON.stringify(sizes, null, 2));
-
 
   const setSelectedVariant = useVariantStore(
     (s) => s.setSelectedVariant
   );
 
-  // 🔥 Build lookup for available sizes
   const sizeMap = new Map(
     sizes.map((s) => [s.sizeLabel, s])
   );
@@ -53,11 +50,10 @@ export default function SizePicker({
         {SIZES.map((label) => {
           const size = sizeMap.get(label);
 
-          const disabled =
-            !size || size.inStock === false;
+          const disabled = !size || size.inStock === false;
 
           const isActive =
-            size && selectedVariantId === size.variantId;
+            size && selectedVariant?.id === size.variantId;
 
           return (
             <button
@@ -65,7 +61,10 @@ export default function SizePicker({
               disabled={disabled}
               onClick={() =>
                 size &&
-                setSelectedVariant(productId, size.variantId)
+                setSelectedVariant(productId, {
+                  id: size.variantId,
+                  size: size.sizeLabel,
+                })
               }
               className={cn(
                 "rounded-lg border px-3 py-3 text-center transition",

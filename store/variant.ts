@@ -2,15 +2,26 @@
 
 import { create } from "zustand";
 
+type SelectedVariant = {
+  id: string;
+  size: string;
+};
+
 type VariantState = {
-  // color selection
   selectedColorByProduct: Record<string, number>;
   setColorIndex: (productId: string, index: number) => void;
 
-  // size / variant selection
-  selectedVariantByProduct: Record<string, string | undefined>;
-  setSelectedVariant: (productId: string, variantId: string) => void;
+  selectedVariantByProduct: Record<
+    string,
+    SelectedVariant | undefined
+  >;
+
+  setSelectedVariant: (
+    productId: string,
+    variant: SelectedVariant
+  ) => void;
 };
+
 
 export const useVariantStore = create<VariantState>((set) => ({
   selectedColorByProduct: {},
@@ -22,18 +33,18 @@ export const useVariantStore = create<VariantState>((set) => ({
         ...state.selectedColorByProduct,
         [productId]: index,
       },
-      // 🔥 reset size when color changes
       selectedVariantByProduct: {
         ...state.selectedVariantByProduct,
         [productId]: undefined,
       },
     })),
 
-  setSelectedVariant: (productId, variantId) =>
+  setSelectedVariant: (productId, variant) =>
     set((state) => ({
       selectedVariantByProduct: {
         ...state.selectedVariantByProduct,
-        [productId]: variantId,
+        [productId]: variant,
       },
     })),
 }));
+
