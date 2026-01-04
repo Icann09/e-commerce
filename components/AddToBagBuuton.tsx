@@ -6,6 +6,7 @@ import { useCartStore } from "@/store/cart";
 type Props = {
   productId: string;
   name: string;
+  category: string;
   price: number;
   galleryColors: {
     color: string;
@@ -16,6 +17,7 @@ type Props = {
 export default function AddToBagButton({
   productId,
   name,
+  category,
   price,
   galleryColors,
 }: Props) {
@@ -44,6 +46,7 @@ export default function AddToBagButton({
   addItem({
     id: `${productId}-${selectedVariant.id}`,
     name,
+    category,
     price,
     image,
     size: selectedVariant.size, // ✅ works

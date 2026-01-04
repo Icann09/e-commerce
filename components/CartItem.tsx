@@ -6,6 +6,7 @@ import { useCartStore } from "@/store/cart";
 type Props = {
   id: string;
   name: string;
+  category: string;
   price: number;
   quantity: number;
   image?: string;
@@ -15,6 +16,7 @@ type Props = {
 export default function CartItem({
   id,
   name,
+  category,
   price,
   quantity,
   image,
@@ -58,6 +60,8 @@ export default function CartItem({
         ${(price * quantity).toFixed(2)}
       </p>
           <span>Size : {size}</span>
+          <span>Category : {category}</span>
+
 
     </div>
   );

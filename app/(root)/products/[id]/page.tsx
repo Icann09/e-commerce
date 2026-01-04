@@ -253,6 +253,7 @@ const fallbackImages =
   name={product.name}
   price={displayPrice ?? 0}
   galleryColors={galleryColors}
+  category={product.category?.name ?? "Uncategorized"}
 />
 
 

@@ -40,6 +40,7 @@ export default function CartPage() {
               quantity={item.quantity}
               image={item.image}
               size={item.size}
+              category={item.category}
             />
           ))}
         </section>
