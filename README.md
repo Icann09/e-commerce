@@ -13,8 +13,8 @@ https://github.com/Icann09/e-commerce
 
 ## 📸 Screenshots
 <p align="center">
-  <img src="../assets/homepage.webp" width="45%" alt="Home"/>
-  <img src="../assets/productspage.webp" width="45%" alt="Products"/>
+  <img src="../feature.png" width="45%" alt="Home"/>
+  <img src="./feature.png" width="45%" alt="Products"/>
 </p>
 <p align="center">
   <img src="../assets/productidpage.webp" width="45%" alt="Product Id"/>
