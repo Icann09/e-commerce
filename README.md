@@ -1,36 +1,115 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# 🛒 E-Commerce Platform (Next.js)
 
-## Getting Started
+A modern full-stack e-commerce application built with Next.js, featuring authentication, cart management, wishlists, and a scalable database design.
 
-First, run the development server:
 
+## 🔗 Live Demo
+https://your-vercel-link.vercel.app
+
+
+## 📦 Repository
+https://github.com/Icann09/e-commerce
+
+
+## 📸 Screenshots
+<p align="center">
+  <img src="/assets/homepage.webp" width="45%" alt="Home"/>
+  <img src="/assets/productspage.webp" width="45%" alt="Products"/>
+</p>
+<p align="center">
+  <img src="/assets/productidpage.webp" width="45%" alt="Product Id"/>
+  <img src="/assets/cartpage.webp" width="45%" alt="Carts"/>
+</p>
+<p align="center">
+  <img src="/assets/orderspage.webp" width="45%" alt="Orders"/>
+  <img src="/assets/favoritespage.webp" width="45%" alt="Favorites"/>
+</p>
+
+
+## ✨ Features
+
+- User authentication with secure session handling
+- Product variants (color & size) with dynamic availability
+- Cart system with persistent storage (Zustand + localStorage)
+- Wishlist (Favorites) per authenticated user
+- Responsive mobile-first UI
+- Optimized image handling using Next.js Image
+- Type-safe database access with Drizzle ORM
+
+
+## 🛠 Tech Stack
+
+### Frontend
+- Next.js (App Router)
+- React
+- Tailwind CSS
+- Zustand (state management)
+
+### Backend
+- Next.js Server Actions
+- Drizzle ORM
+- PostgreSQL
+
+### Auth & Storage
+- Authentication with secure cookies
+- Persistent cart via localStorage
+
+### Deployment
+- Vercel
+
+
+## 🧠 Architecture & Key Decisions
+
+- Server Actions are used instead of REST APIs to reduce client-server boilerplate
+- Database queries are centralized to keep UI components clean
+- Variant selection logic resets when color changes to prevent invalid state
+- Wishlist logic is server-side to ensure user-specific data isolation
+
+
+## 🚧 Challenges & Learnings
+
+- Handling product variants without duplicating state across components
+- Fixing TypeScript strict-null errors for authenticated users
+- Managing persistent cart state while keeping UI reactive
+- Ensuring mobile responsiveness across complex layouts
+
+
+## 🚀 Getting Started
+
+### 1. Clone the repo
 ```bash
+git clone https://github.com/Icann09/e-commerce.git
+cd e-commerce
+
+### 2. Install Dependencies
+npm install
+
+### 3. Setup Environment Variables
+DATABASE_URL=
+GOOGLE_CLIENT_ID=
+GOOGLE_CLIENT_SECRET=
+NEXTAUTH_URL=
+BETTER_AUTH_SECRET=
+BETTER_AUTH_URL=
+
+### 4. Run Locally
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+---
+## 📂 Folder Structure
+app/        → Next.js routes  
+components/ → Reusable UI components  
+lib/        → Database & server logic  
+store/      → Zustand stores  
 
-## Learn More
 
-To learn more about Next.js, take a look at the following resources:
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## 👨‍💻 About Me
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+I'm Muhammad Kaisan Farasdag, a front-end developer transitioning into full-stack development.
+I focus on building scalable, user-focused web applications using modern JavaScript frameworks.
 
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+- GitHub: https://github.com/Icann09
+- LinkedIn: https://www.linkedin.com/in/muhammad-kaisan-35a103211

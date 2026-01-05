@@ -4,8 +4,8 @@ import Image from "next/image";
 import Link from "next/link";
 import { useState } from "react";
 import { User, Menu, SquareX } from "lucide-react";
-import AddedToBag from "./AddedToBag";
-import ClientProviders from "./ClientProvider";
+import { useCartStore } from "@/store/cart";
+import { useEffect } from "react";
 
 
 
@@ -24,6 +24,14 @@ const NAV_LINKS = [
 
 export default function Navbar ({ user }: { user: User | null } ) {
   const [open, setOpen] = useState(false);
+  const cartCount = useCartStore((s) => s.getItemCount());
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  if (!mounted) return null; 
   
 
   return (
@@ -56,10 +64,8 @@ export default function Navbar ({ user }: { user: User | null } ) {
           <p>|</p>
           <button className="relative text-body text-dark-900 font-semibold transition-colors hover:text-dark-700">
             <Link href="/cart">
-              My Cart
-              {/* <AddedToBag /> */}
+              My Cart ({cartCount})
             </Link>
-            {/* <AddedToBag /> */}
           </button>
           <p>|</p>
           {user ? (
@@ -118,7 +124,13 @@ export default function Navbar ({ user }: { user: User | null } ) {
           ))}
           <li className="flex items-center justify-between pt-2">
             <button className="text-body font-semibold">Search</button>
-            <button className="text-body font-semibold">My Cart </button>
+            <Link
+              href="/cart"
+              className="relative text-body text-dark-900 font-semibold transition-colors hover:text-dark-700"
+            >
+              My Cart ({mounted ? cartCount : 0})
+            </Link>
+
           </li>
         </ul>
       </div>
