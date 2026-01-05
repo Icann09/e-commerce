@@ -12,18 +12,10 @@ https://github.com/Icann09/e-commerce
 
 
 ## 📸 Screenshots
-<p align="center">
-  <img src="../feature.png" width="45%" alt="Home"/>
-  <img src="./feature.png" width="45%" alt="Products"/>
-</p>
-<p align="center">
-  <img src="../assets/productidpage.webp" width="45%" alt="Product Id"/>
-  <img src="../assets/cartpage.webp" width="45%" alt="Carts"/>
-</p>
-<p align="center">
-  <img src="../assets/orderspage.webp" width="45%" alt="Orders"/>
-  <img src="../assets/favoritespage.webp" width="45%" alt="Favorites"/>
-</p>
+![Homepage Preview](./assets/homepage.webp)
+![Homepage Preview](../assets/homepage.webp)
+
+
 
 
 ## ✨ Features
@@ -80,11 +72,15 @@ https://github.com/Icann09/e-commerce
 ```bash
 git clone https://github.com/Icann09/e-commerce.git
 cd e-commerce
-
+```
 ### 2. Install Dependencies
+```bash
 npm install
+```
 
 ### 3. Setup Environment Variables
+env
+
 DATABASE_URL=
 GOOGLE_CLIENT_ID=
 GOOGLE_CLIENT_SECRET=
@@ -92,8 +88,11 @@ NEXTAUTH_URL=
 BETTER_AUTH_SECRET=
 BETTER_AUTH_URL=
 
+
 ### 4. Run Locally
+```bash
 npm run dev
+```
 
 
 
