@@ -12,8 +12,9 @@ https://github.com/Icann09/e-commerce
 
 
 ## 📸 Screenshots
-![Homepage Preview](./assets/homepage.webp)
-![Homepage Preview](../assets/homepage.webp)
+![Homepage Preview](/feature.png)
+![Homepage Preview](../feature.png)
+![Homepage Preview](./feature.png)
 
 
 
