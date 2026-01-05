@@ -4,6 +4,8 @@ import Image from "next/image";
 import Link from "next/link";
 import { useState } from "react";
 import { User, Menu, SquareX } from "lucide-react";
+import AddedToBag from "./AddedToBag";
+import ClientProviders from "./ClientProvider";
 
 
 
@@ -52,10 +54,12 @@ export default function Navbar ({ user }: { user: User | null } ) {
             Search
           </button>
           <p>|</p>
-          <button className="text-body text-dark-900 font-semibold transition-colors hover:text-dark-700">
+          <button className="relative text-body text-dark-900 font-semibold transition-colors hover:text-dark-700">
             <Link href="/cart">
               My Cart
+              {/* <AddedToBag /> */}
             </Link>
+            {/* <AddedToBag /> */}
           </button>
           <p>|</p>
           {user ? (
@@ -114,7 +118,7 @@ export default function Navbar ({ user }: { user: User | null } ) {
           ))}
           <li className="flex items-center justify-between pt-2">
             <button className="text-body font-semibold">Search</button>
-            <button className="text-body font-semibold">My Cart (2)</button>
+            <button className="text-body font-semibold">My Cart </button>
           </li>
         </ul>
       </div>

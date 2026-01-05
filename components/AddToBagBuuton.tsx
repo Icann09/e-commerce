@@ -2,6 +2,7 @@
 
 import { useVariantStore } from "@/store/variant";
 import { useCartStore } from "@/store/cart";
+import { useUIStore } from "@/store/ui";
 
 type Props = {
   productId: string;
@@ -21,6 +22,8 @@ export default function AddToBagButton({
   price,
   galleryColors,
 }: Props) {
+  
+
   const selectedVariantId = useVariantStore(
     (s) => s.selectedVariantByProduct[productId]
   );
@@ -33,6 +36,8 @@ export default function AddToBagButton({
 
   const selectedVariant = useVariantStore(
   (s) => s.selectedVariantByProduct[productId]
+
+  
 );
 
 
@@ -40,18 +45,28 @@ export default function AddToBagButton({
   const image =
     galleryColors[selectedColorIndex]?.images[0];
 
-  const onAdd = () => {
-  if (!selectedVariant || !image) return;
+  const openAdded = useUIStore((s) => s.openAdded);
 
-  addItem({
-    id: `${productId}-${selectedVariant.id}`,
-    name,
-    category,
-    price,
-    image,
-    size: selectedVariant.size, // ✅ works
-  });
-};
+  const onAdd = () => {
+    if (!selectedVariant || !image) return;
+
+    addItem({
+      id: `${productId}-${selectedVariant.id}`,
+      name,
+      category,
+      price,
+      image,
+      size: selectedVariant.size,
+    });
+
+    openAdded({
+      image,
+      name,
+      category,
+      size: selectedVariant.size,
+      price,
+    });
+  };
 
 
   return (

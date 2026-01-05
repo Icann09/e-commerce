@@ -1,6 +1,7 @@
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import { getCurrentUser } from "@/lib/auth/actions";
+import ClientProviders from "@/components/ClientProvider";
 
 
 export default async function RootLayout({
@@ -13,6 +14,7 @@ export default async function RootLayout({
     <>
       <Navbar user={user ?? null} />
       {children}
+      <ClientProviders />
       <Footer />
     </>
   );

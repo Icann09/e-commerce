@@ -10,6 +10,7 @@ import { db } from "@/lib/db";
 import { wishlists } from "@/lib/db/schema";
 import { and, eq } from "drizzle-orm";
 import { getCurrentUser } from "@/lib/auth/actions";
+import AddedToBag from "@/components/AddedToBag";
 
 
 type GalleryColor = {
