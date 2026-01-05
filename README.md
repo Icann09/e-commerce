@@ -13,16 +13,16 @@ https://github.com/Icann09/e-commerce
 
 ## 📸 Screenshots
 <p align="center">
-  <img src="/assets/homepage.webp" width="45%" alt="Home"/>
-  <img src="/assets/productspage.webp" width="45%" alt="Products"/>
+  <img src="./assets/homepage.webp" width="45%" alt="Home"/>
+  <img src="./assets/productspage.webp" width="45%" alt="Products"/>
 </p>
 <p align="center">
-  <img src="/assets/productidpage.webp" width="45%" alt="Product Id"/>
-  <img src="/assets/cartpage.webp" width="45%" alt="Carts"/>
+  <img src="./assets/productidpage.webp" width="45%" alt="Product Id"/>
+  <img src="./assets/cartpage.webp" width="45%" alt="Carts"/>
 </p>
 <p align="center">
-  <img src="/assets/orderspage.webp" width="45%" alt="Orders"/>
-  <img src="/assets/favoritespage.webp" width="45%" alt="Favorites"/>
+  <img src="./assets/orderspage.webp" width="45%" alt="Orders"/>
+  <img src="./assets/favoritespage.webp" width="45%" alt="Favorites"/>
 </p>
 
 
