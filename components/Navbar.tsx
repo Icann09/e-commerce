@@ -6,6 +6,10 @@ import { useState } from "react";
 import { User, Menu, SquareX } from "lucide-react";
 import { useCartStore } from "@/store/cart";
 import { useEffect } from "react";
+import { signOut } from "@/lib/auth/actions";
+import { useRouter } from "next/navigation";
+
+
 
 
 
@@ -25,7 +29,9 @@ const NAV_LINKS = [
 export default function Navbar ({ user }: { user: User | null } ) {
   const [open, setOpen] = useState(false);
   const cartCount = useCartStore((s) => s.getItemCount());
+  const clearCart = useCartStore((s) => s.clearCart);
   const [mounted, setMounted] = useState(false);
+  const router = useRouter();
 
   useEffect(() => {
     setMounted(true);
@@ -69,7 +75,50 @@ export default function Navbar ({ user }: { user: User | null } ) {
           </button>
           <p>|</p>
           {user ? (
-            <Link href="/profile/my-orders" className="flex gap-2">Hi, {user.name.split(" ")[0]} <User /> </Link>
+            <div className="group relative inline-block">
+              <Link href="/profile/my-orders" className="flex gap-2 cursor-pointer font-medium">Hi, {user.name.split(" ")[0]} <User /> </Link>
+                {/* Dialog */}
+              <div
+                className="
+                  absolute right-0 top-full mt-2 w-56
+      rounded-xl bg-white p-4 shadow-xl
+      opacity-0 translate-y-1
+      transition-all duration-200
+      group-hover:opacity-100
+      group-hover:translate-y-0
+                "
+              >
+                <h3 className=" text-[18px]">Profile</h3>
+                <div className="text-gray-500 mt-2">
+                  <div className="flex flex-col gap-1.5">
+                    <Link href="/profile/my-orders">
+                    My Orders
+                    </Link>
+                    <Link href="/profile/favorites">
+                    Favorites
+                    </Link>
+                    <Link href="/profile/my-details">
+                    My Details
+                    </Link>
+                    <Link href="/profile/payment-methods">
+                    Payment Methods
+                    </Link>
+                    <Link href="/profile/address-book">
+                    Address Book
+                    </Link>
+                    <button className="bg-black p-2 text-white cursor-pointer rounded-sm" 
+                      onClick={async () => {
+                        await signOut();
+                        clearCart();
+                        router.refresh(); // refresh server components
+                      }}
+                      >
+                      Log Out
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
             ) : (
               <div className="flex gap-6">
                 <Link href="/sign-up" aria-label="Sign-In">
@@ -131,6 +180,20 @@ export default function Navbar ({ user }: { user: User | null } ) {
               My Cart ({mounted ? cartCount : 0})
             </Link>
 
+          </li>
+          <li>
+          {user ? (
+            <button className="bg-black/90 w-full p-2 mt-2 text-white cursor-pointer rounded-sm" 
+              onClick={async () => {
+                await signOut();
+                clearCart();
+                router.refresh(); // refresh server components
+              }}
+              >
+              Log Out
+            </button>
+          ) : null}
+          
           </li>
         </ul>
       </div>

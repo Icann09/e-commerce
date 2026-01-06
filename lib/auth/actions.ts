@@ -119,9 +119,13 @@ export async function getCurrentUser() {
 }
 
 export async function signOut() {
-  await auth.api.signOut({ headers: {} });
+  await auth.api.signOut({
+    headers: await headers(), // ✅ REQUIRED
+  });
+
   return { ok: true };
 }
+
 
 export async function mergeGuestCartWithUserCart() {
   await migrateGuestToUser();
