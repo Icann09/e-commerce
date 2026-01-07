@@ -11,11 +11,25 @@ https://your-vercel-link.vercel.app
 https://github.com/Icann09/e-commerce
 
 
-## 📸 Screenshots
-<img src="./public/assets/homepage.webp" alt="Project Banner" />
+## 📸 Previews
 
+### 🏠 Home Page
+<p align="center">
+  <img src="./public/assets/homepage.webp" alt="Home Page" width="800" />
+</p>
 
+### 🛍️ Product & Listing Pages
+<p align="center">
+  <img src="./public/assets/productspage.webp" alt="Products Page" width="380" />
+  <img src="./public/assets/productidpage.webp" alt="Product Detail Page" width="380" />
+</p>
 
+### ❤️ Cart, Favorites & Orders
+<p align="center">
+  <img src="./public/assets/cartpage.webp" alt="Cart Page" width="380" />
+  <img src="./public/assets/favoritespage.webp" alt="Favorites Page" width="380" />
+  <img src="./public/assets/orderspage.webp" alt="Orders Page" width="380" />
+</p>
 
 
 ## ✨ Features
