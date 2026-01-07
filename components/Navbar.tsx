@@ -70,7 +70,7 @@ export default function Navbar ({ user }: { user: User | null } ) {
           <p>|</p>
           <button className="relative text-body text-dark-900 font-semibold transition-colors hover:text-dark-700">
             <Link href="/cart">
-              My Cart ({cartCount})
+              My Cart {cartCount ? `(${cartCount})` : ""}
             </Link>
           </button>
           <p>|</p>
@@ -177,7 +177,7 @@ export default function Navbar ({ user }: { user: User | null } ) {
               href="/cart"
               className="relative text-body text-dark-900 font-semibold transition-colors hover:text-dark-700"
             >
-              My Cart ({mounted ? cartCount : 0})
+              My Cart {mounted ? `(${cartCount})` : ""}
             </Link>
 
           </li>

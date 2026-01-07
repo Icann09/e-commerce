@@ -5,28 +5,44 @@ import Link from "next/link";
 import SocialProviders from "./SocialProviders";
 import {useRouter} from "next/navigation";
 
+type AuthResult =
+  | { ok: true; userId?: string }
+  | { ok: false; error: string };
+
+
 type Props = {
   mode: "sign-in" | "sign-up";
-  onSubmit: (formData: FormData) => Promise<{ ok: boolean; userId?: string } | void>;
+  onSubmit: (formData: FormData) => Promise<AuthResult>;
 };
 
 export default function AuthForm({ mode, onSubmit }: Props) {
   const [show, setShow] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+
   const router = useRouter();
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    setError(null);
+    setLoading(true);
 
     const formData = new FormData(e.currentTarget);
 
     try {
       const result = await onSubmit(formData);
 
-      if(result?.ok) router.push("/");
-    } catch (e) {
-      console.log("error", e);
+      if (result?.ok) {
+        router.push("/");
+      } else {
+        setError(result?.error ?? "Invalid email or password");
+      }
+    } catch {
+      setError("Invalid email or password");
+    } finally {
+      setLoading(false);
     }
-  }
+  };
 
   return (
     <div className="space-y-6">
@@ -56,6 +72,11 @@ export default function AuthForm({ mode, onSubmit }: Props) {
         </span>
         <hr className="h-px w-full border-0 bg-light-300" />
       </div>
+      {error && (
+        <p className="rounded-lg bg-red-50 px-4 py-2 text-sm text-red-600">
+          {error}
+        </p>
+      )}
 
       <form
         className="space-y-4"
@@ -120,9 +141,18 @@ export default function AuthForm({ mode, onSubmit }: Props) {
 
         <button
           type="submit"
-          className="mt-2 w-full rounded-full bg-dark-900 px-6 py-3 text-body-medium text-light-100 hover:bg-dark-700 focus:outline-none focus:ring-2 focus:ring-dark-900/20"
+          disabled={loading}
+          className="mt-2 w-full rounded-full bg-dark-900 px-6 py-3 text-body-medium text-light-100
+                    hover:bg-dark-700 focus:outline-none focus:ring-2 focus:ring-dark-900/20
+                    disabled:opacity-50 disabled:cursor-not-allowed"
         >
-          {mode === "sign-in" ? "Sign In" : "Sign Up"}
+          {loading
+            ? mode === "sign-in"
+              ? "Signing in..."
+              : "Signing up..."
+            : mode === "sign-in"
+            ? "Sign In"
+            : "Sign Up"}
         </button>
 
         {mode === "sign-up" && (

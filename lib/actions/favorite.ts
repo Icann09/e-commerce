@@ -10,6 +10,7 @@ import { productImages } from "../db/schema";
 import { productVariants } from "../db/schema";
 import { categories } from "../db/schema";
 import { sql } from "drizzle-orm";
+import { redirect } from "next/navigation";
 
 
 
@@ -91,7 +92,9 @@ export async function removeFromWishlist(productId: string) {
 
 export async function toggleWishlist(productId: string) {
   const user = await getCurrentUser();
-  if (!user?.id) throw new Error("Unauthorized");
+  if (!user?.id) {
+    redirect("/sign-in");
+  };
 
   const existing = await db.query.wishlists.findFirst({
     where: and(

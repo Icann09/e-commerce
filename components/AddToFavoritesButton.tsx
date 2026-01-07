@@ -29,7 +29,7 @@ export default function AddToFavoritesButton({
           await toggleWishlist(productId);
         })
       }
-      className="flex items-center justify-center gap-2 rounded-full border px-6 py-4 disabled:opacity-50"
+      className="flex items-center justify-center gap-2 rounded-full border px-6 py-4 cursor-pointer hover:bg-gray-100 disabled:opacity-50"
     >
       <Heart
         className={`h-5 w-5 transition ${
