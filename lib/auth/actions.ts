@@ -61,6 +61,11 @@ const signUpSchema = z.object({
   name: nameSchema,
 });
 
+const signInSchema = z.object({
+  email: emailSchema,
+  password: passwordSchema,
+});
+
 export async function signUp(formData: FormData) {
   const rawData = {
     name: formData.get("name") as string,
