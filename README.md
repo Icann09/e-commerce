@@ -12,9 +12,8 @@ https://github.com/Icann09/e-commerce
 
 
 ## 📸 Screenshots
-![Homepage Preview](/feature.png)
-![Homepage Preview](../feature.png)
-![Homepage Preview](./feature.png)
+<img src="./public/feature.png" alt="Project Banner" />
+
 
 
 
