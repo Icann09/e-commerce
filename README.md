@@ -12,7 +12,7 @@ https://github.com/Icann09/e-commerce
 
 
 ## 📸 Screenshots
-<img src="./public/feature.png" alt="Project Banner" />
+<img src="./public/assets/homepage.webp" alt="Project Banner" />
 
 
 
