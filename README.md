@@ -4,7 +4,7 @@ A modern full-stack e-commerce application built with Next.js, featuring authent
 
 
 ## 🔗 Live Demo
-https://your-vercel-link.vercel.app
+https://e-commerce-two-ashen-45.vercel.app
 
 
 ## 📦 Repository
