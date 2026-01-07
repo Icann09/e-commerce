@@ -7,6 +7,7 @@ import { db } from "@/lib/db";
 import { guests } from "@/lib/db/schema/index";
 import { and, eq, lt } from "drizzle-orm";
 import { randomUUID } from "crypto";
+import { BetterAuthError } from "better-auth";
 
 const COOKIE_OPTIONS = {
   httpOnly: true as const,
@@ -87,23 +88,42 @@ const signInSchema = z.object({
 });
 
 export async function signIn(formData: FormData) {
-  const rawData = {
-    email: formData.get('email') as string,
-    password: formData.get('password') as string,
+  try {
+    const rawData = {
+      email: formData.get("email") as string,
+      password: formData.get("password") as string,
+    };
+
+    const data = signInSchema.parse(rawData);
+
+    const res = await auth.api.signInEmail({
+      body: {
+        email: data.email,
+        password: data.password,
+      },
+    });
+
+    await migrateGuestToUser();
+
+    return {
+      ok: true as const,
+      userId: res.user?.id,
+    };
+  } catch (error) {
+    if (error instanceof BetterAuthError) {
+      return {
+        ok: false as const,
+        error: "Invalid email or password",
+      };
+    }
+
+    return {
+      ok: false as const,
+      error: "Invalid email or password",
+    };
   }
-
-  const data = signInSchema.parse(rawData);
-
-  const res = await auth.api.signInEmail({
-    body: {
-      email: data.email,
-      password: data.password,
-    },
-  });
-
-  await migrateGuestToUser();
-  return { ok: true, userId: res.user?.id };
 }
+
 
 export async function getCurrentUser() {
   try {
