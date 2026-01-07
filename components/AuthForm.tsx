@@ -38,7 +38,7 @@ export default function AuthForm({ mode, onSubmit }: Props) {
         setError(result?.error ?? "Invalid email or password");
       }
     } catch {
-      setError("Invalid email or password");
+      setError("Something went wrong. Please try again.");
     } finally {
       setLoading(false);
     }
